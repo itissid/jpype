@@ -74,17 +74,18 @@ class JPypeSetup(object):
             self.javaHome+"/include/"+self.jdkInclude,
             self.javaHome + "/Headers",
             self.javaHome + "/Headers/" + self.jdkInclude,
-            self.macOSXJavaHeaders,
             "src/native/common/include",  
             "src/native/python/include", 
         ]
+        if hasattr(self, 'macOSXJavaHeaders'):
+            self.includeDirs.append(self.macOSXJavaHeaders)
 
 
     def setup(self):
         self.setupFiles()
         self.setupPlatform()
         self.setupInclusion()
-        
+
         jpypeLib = Extension("_jpype", 
                              self.cpp, 
                              libraries=self.libraries, 
@@ -93,7 +94,7 @@ class JPypeSetup(object):
                              library_dirs=self.libraryDir,
                              extra_compile_args=self.extra_compile_args
                              )
-         
+
         distSetup( 
             name="JPype", 
             version="0.5.4.2",
